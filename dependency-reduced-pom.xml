@@ -20,7 +20,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.luico.kstream.KStream4StandinWithStoreDistribuido</mainClass>
+                  <mainClass>com.luico.kstream.KStream5StandinWithStoreDistribuido</mainClass>
                 </transformer>
               </transformers>
               <filters>
@@ -73,7 +73,7 @@
               </descriptorRefs>
               <archive>
                 <manifest>
-                  <mainClass>com.luico.kstream.KStream4StandinWithStoreDistribuido</mainClass>
+                  <mainClass>com.luico.kstream.KStream5StandinWithStoreDistribuido</mainClass>
                 </manifest>
               </archive>
             </configuration>

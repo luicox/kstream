@@ -2,23 +2,33 @@ package com.luico.kstream;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.StreamsConfig;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class KStream0PropertiesFactory_1 {
     public static Properties build() {
         Properties props = new Properties();
+        Properties props2 = new Properties();
+        try (InputStream input = KStream0PropertiesFactory_1.class.getClassLoader().getResourceAsStream("config.properties")) {
+            props2.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "standin-processor-app");
         props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "pkc-921jm.us-east-2.aws.confluent.cloud:9092"); // Reemplaza con tu endpoint
-
         // Configuración de seguridad para Confluent Cloud
         props.put("security.protocol", "SASL_SSL");
         props.put("sasl.mechanism", "PLAIN");
         props.put("sasl.jaas.config",
                 "org.apache.kafka.common.security.plain.PlainLoginModule required " +
-                        "username='' " +
-                        "password='';");
+                        "username='"+props2.get("cc.cluster1.username")+"' " +
+                        "password='"+props2.get("cc.cluster1.password")+"';");
+
 
         // Configuración de procesamiento robusto
         props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, "exactly_once_v2");
@@ -40,6 +50,9 @@ public class KStream0PropertiesFactory_1 {
         props.put(StreamsConfig.consumerPrefix(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG), "15000");
 
         props.put(StreamsConfig.STATE_DIR_CONFIG, "/tmp/state-store");
+
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 
 
         return props;
