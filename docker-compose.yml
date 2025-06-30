@@ -1,0 +1,6 @@
+services:
+  kstream-app0:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
